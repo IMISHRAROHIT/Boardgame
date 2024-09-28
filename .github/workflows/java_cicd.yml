@@ -1,5 +1,5 @@
 
-name: CICD JAVA WITH SONAR QUBE
+name: CICD JAVA WITH SONAR QUBE TEST
 
 on:
   push:
