@@ -26,9 +26,25 @@ jobs:
         name: my-artifact
         path: target/*.jar
 
-    - name: Trivy Scan
-      run:
-        trivy fs --format table -o trivy-fs-report.html .
+    - name: Install Trivy
+      run: |
+          sudo apt-get update -y
+          sudo apt-get install wget -y
+          wget https://github.com/aquasecurity/trivy/releases/download/v0.45.1/trivy_0.45.1_Linux-64bit.deb
+          sudo dpkg -i trivy_0.45.1_Linux-64bit.deb
+          trivy --version
+
+      # Step 3: Run Trivy scan
+    - name: Run Trivy filesystem scan
+      run: |
+          trivy fs --format table -o trivy-fs-report.html .
+
+      # Step 4: Upload the report as an artifact (optional)
+    - name: Upload Trivy report
+      uses: actions/upload-artifact@v3
+      with:
+          name: trivy-fs-report
+          path: trivy-fs-report.html
     - name: Official SonarQube Scan
       uses: SonarSource/sonarqube-scan-action@v3.0.0
             
